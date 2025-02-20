@@ -1,0 +1,36 @@
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.app {
+    height: 100vh;
+    overflow-y: scroll;
+    background: url('../public/assets/hero_bg.jpg') center / cover no-repeat;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 560px 440px;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding-top: 50px;
+    &__interactive {
+        padding-left: 40px;
+    }
+}
