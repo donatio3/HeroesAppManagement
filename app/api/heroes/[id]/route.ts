@@ -10,22 +10,33 @@ type Context = {
     params: Params;
 };
 
-export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: number }> }) {
-    const id = (await params).id;
+export async function DELETE(req: NextRequest, {params}: {params: Promise<{ id: string }> }) {
+    try {
+
+    const id = Number((await params).id)
 
     if (!id) {
         return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
-    try {
-        // Удаляем героя по ID
-        const hero = await prisma.heroes.delete({
-            where: {
-                id // Преобразуем строку в число    
-            },
-        });
+    const heroItem = await prisma.heroes.findFirst({
+        where: {
+            id
+        },
+    })
 
-        return NextResponse.json(hero, { status: 200 });
+
+    if (!heroItem) {
+        return NextResponse.json({error: 'Cart item not found'}, {status: 404})
+    }
+
+    await prisma.heroes.delete({
+        where: {
+            id
+        }
+    })
+
+        return NextResponse.json(heroItem, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: 'Hero not found' }, { status: 404 });
     }  
